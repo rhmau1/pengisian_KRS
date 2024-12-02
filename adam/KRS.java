@@ -2,21 +2,20 @@ package pengisian_KRS.adam;
 import java.util.Scanner;
 
 public class KRS {
-    static int a = -1; // Awali dengan -1 untuk indeks array
-    static final int MAX_DATA = 10000000; // Ukuran maksimum array
-    static String[][] krs = new String[MAX_DATA][5]; // Array untuk menyimpan data mahasiswa
-    static String[][] sksData = new String[MAX_DATA][2]; // Array untuk menyimpan NIM dan jumlah SKS
+    static int a = 0; // Indeks untuk data mahasiswa
+    static final int data = 100000000; // Ukuran maksimum array
+    static String[][] krs = new String[data][5]; // Array untuk menyimpan data mahasiswa
+    static String[][] sksData = new String[data][2]; // Array untuk menyimpan NIM dan jumlah SKS
     static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
         tambah();
+        show();
     }
 
     public static void tambah() {
         String next;
         do {
-
-            a++; // Inkrementasi indeks untuk data baru
             System.out.print("Masukkan NIM: ");
             krs[a][0] = sc.nextLine();
 
@@ -64,7 +63,10 @@ public class KRS {
             }
 
             // Cek total jumlah SKS
-            int totalSKS = Integer.parseInt(sksData[a][1]);
+            int totalSKS = 0;
+            if (sksData[a][1] != null) {
+                totalSKS = Integer.parseInt(sksData[a][1]);
+            }
 
             // Jika jumlah SKS lebih dari 24, batalkan input terakhir
             if (totalSKS > 24) {
@@ -72,13 +74,22 @@ public class KRS {
                 for (int j = 0; j < krs[0].length; j++) {
                     krs[a][j] = null; // Kosongkan data input terakhir
                 }
-                a--; // Kurangi indeks karena data terakhir dibatalkan
-                // Batalkan update jumlah SKS
                 sksData[a][1] = "0"; // Reset jumlah SKS untuk NIM ini
-            }
-
+            } 
+           
             System.out.print("Apakah ingin menambahkan data lagi? (y/n): ");
             next = sc.nextLine();
+
+            if (next.equalsIgnoreCase("y")) {
+                a++; // Inkrementasi indeks untuk data baru
+            }
         } while (next.equalsIgnoreCase("y"));
+    }
+
+    public static void show() {
+        System.out.println("Data KRS:");
+        for (int i = 0; i < a; i++) {
+            System.out.println("NIM: " + krs[i][0] + ", Nama: " + krs[i][1] + ", Mata Kuliah: " + krs[i][3] + ", Jumlah SKS: " + krs[i][4]);
+        }
     }
 }
