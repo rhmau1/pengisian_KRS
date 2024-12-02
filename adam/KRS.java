@@ -1,4 +1,5 @@
-package pengisian_KRS.adam;
+package adam;
+
 import java.util.Scanner;
 
 public class KRS {
@@ -75,8 +76,8 @@ public class KRS {
                     krs[a][j] = null; // Kosongkan data input terakhir
                 }
                 sksData[a][1] = "0"; // Reset jumlah SKS untuk NIM ini
-            } 
-           
+            }
+
             System.out.print("Apakah ingin menambahkan data lagi? (y/n): ");
             next = sc.nextLine();
 
@@ -89,7 +90,8 @@ public class KRS {
     public static void show() {
         System.out.println("Data KRS:");
         for (int i = 0; i < a; i++) {
-            System.out.println("NIM: " + krs[i][0] + ", Nama: " + krs[i][1] + ", Mata Kuliah: " + krs[i][3] + ", Jumlah SKS: " + krs[i][4]);
+            System.out.println("NIM: " + krs[i][0] + ", Nama: " + krs[i][1] + ", Mata Kuliah: " + krs[i][3]
+                    + ", Jumlah SKS: " + krs[i][4]);
         }
     }
 }
