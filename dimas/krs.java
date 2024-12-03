@@ -1,5 +1,4 @@
-
-
+package dimas;
 import java.util.Scanner;
 
 public class krs {
@@ -33,3 +32,4 @@ public class krs {
         scanner.close();
     }
 }
+
