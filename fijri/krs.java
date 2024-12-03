@@ -24,7 +24,7 @@ public class krs {
                 case 1:
                     System.out.println();
                     System.out.println("--- Tambah Data KRS ---");
-                    input(sc);
+                    tambah(sc);
                     break;
                 case 2:
                     System.out.println();
@@ -36,6 +36,7 @@ public class krs {
                 case 3:
                     System.out.println();
                     System.out.println("--- Analisis Data KRS ---");
+                    System.out.println("Jumlah mahasiswa yang mengambil SKS kurang dari 20: " + analisis());
                     break;
                 case 4:
                     System.out.println("Terima Kasih!");
@@ -47,7 +48,7 @@ public class krs {
         }
     }
 
-    public static void input(Scanner sc) {
+    public static void tambah(Scanner sc) {
         System.out.print("Nama mahasiswa: ");
         String nama = sc.nextLine();
         System.out.print("NIM: ");
@@ -62,23 +63,7 @@ public class krs {
                 break;
             }
 
-            // Salin isi array KRS lama ke array temp
-            String[][] temp = new String[KRS.length][5];
-            for (int i = 0; i < KRS.length; i++) {
-                for (int j = 0; j < KRS[i].length; j++) {
-                    temp[i][j] = KRS[i][j]; // Menyalin data dari KRS lama ke temp
-                }
-            }
-
-            // Perbesar ukuran array KRS
-            KRS = new String[temp.length + 1][5];
-
-            // Salin kembali isi array temp ke array KRS yang baru
-            for (int i = 0; i < temp.length; i++) {
-                for (int j = 0; j < temp[i].length; j++) {
-                    KRS[i][j] = temp[i][j]; // Menyalin kembali data ke KRS yang baru
-                }
-            }
+            pindah();
 
             KRS[KRS.length - 1][0] = nama;
 
@@ -94,25 +79,19 @@ public class krs {
                 System.out.print("Jumlah SKS (1-3): ");
                 String input = sc.nextLine();
                 int sks = Integer.parseInt(input);
-                if (sks >= 1 && sks <= 3) {
-                    if (currentTotalSKS + sks <= 24) {
-                        KRS[KRS.length - 1][4] = input; // Simpan SKS jika valid
-                        System.out.println("Data mata kuliah berhasil ditambahkan.");
-                        currentTotalSKS += sks; // Tambahkan ke total SKS
-                        break;
-                    } else {
-                        System.out.println("Jumlah SKS total melebihi 24. Input tidak valid.");
-                        // Hapus baris terakhir yang tidak valid dari array KRS
-                        String[][] temp2 = new String[KRS.length - 1][5];
-                        for (int i = 0; i < KRS.length - 1; i++) {
-                            temp2[i] = KRS[i];
-                        }
-                        KRS = temp2; // Kembalikan array ke ukuran sebelumnya
-                        break;
-                    }
-                } else {
+                if (sks < 1 || sks > 3) {
                     System.out.println("Jumlah SKS harus antara 1 dan 3. Silakan input kembali.");
+                    continue;
                 }
+                if (currentTotalSKS + sks > 24) {
+                    System.out.println("Jumlah SKS total melebihi 24. Input tidak valid.");
+                    KRS = hapusDataTerakhir();
+                    break;
+                }
+                KRS[KRS.length - 1][4] = input; // Simpan SKS jika valid
+                System.out.println("Data mata kuliah berhasil ditambahkan.");
+                currentTotalSKS += sks; // Tambahkan ke total SKS
+                break;
             }
 
             if (currentTotalSKS >= 24) {
@@ -128,6 +107,34 @@ public class krs {
         System.out.println("total SKS yang diambil: " + totalSKS(nim));
     }
 
+    public static String[][] hapusDataTerakhir() {
+        String[][] temp = new String[KRS.length - 1][5];
+        for (int i = 0; i < KRS.length - 1; i++) {
+            temp[i] = KRS[i];
+        }
+        return KRS = temp;
+    }
+
+    public static void pindah() {
+        // Salin isi array KRS lama ke array temp
+        String[][] temp = new String[KRS.length][5];
+        for (int i = 0; i < KRS.length; i++) {
+            for (int j = 0; j < KRS[i].length; j++) {
+                temp[i][j] = KRS[i][j]; // Menyalin data dari KRS lama ke temp
+            }
+        }
+
+        // Perbesar ukuran array KRS
+        KRS = new String[temp.length + 1][5];
+
+        // Salin kembali isi array temp ke array KRS yang baru
+        for (int i = 0; i < temp.length; i++) {
+            for (int j = 0; j < temp[i].length; j++) {
+                KRS[i][j] = temp[i][j]; // Menyalin kembali data ke KRS yang baru
+            }
+        }
+    }
+
     public static int totalSKS(String nim) {
         int totalSKS = 0;
         for (int i = 0; i < KRS.length; i++) {
@@ -139,7 +146,6 @@ public class krs {
     }
 
     public static void print(String nim) {
-        int totalSKS = 0;
         if (KRS.length == 0) {
             System.out.println("Data KRS kosong.");
             return;
@@ -162,9 +168,34 @@ public class krs {
                     }
                 }
                 System.out.println();
-                totalSKS += Integer.parseInt(KRS[i][4]);
             }
         }
-        System.out.println("total SKS: " + totalSKS);
+        System.out.println("total SKS: " + totalSKS(nim));
     }
+
+    public static int analisis() {
+        int jumlahMhs = 0;
+        boolean sudahDiperiksa; // Variabel untuk menandakan apakah NIM sudah diperiksa
+
+        for (int i = 0; i < KRS.length; i++) {
+            String currentNIM = KRS[i][1];
+            sudahDiperiksa = false;
+
+            for (int j = 0; j < i; j++) {
+                if (KRS[j][1].equals(currentNIM)) {
+                    sudahDiperiksa = true;
+                    break;
+                }
+            }
+
+            if (!sudahDiperiksa) {
+                if (totalSKS(currentNIM) < 20) {
+                    jumlahMhs++;
+                }
+            }
+        }
+
+        return jumlahMhs;
+    }
+
 }
