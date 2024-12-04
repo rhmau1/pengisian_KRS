@@ -28,7 +28,7 @@ public class krs {
                     System.out.println();
                     System.out.println("--- Tampilkan Daftar KRS Mahasiswa ---");
                     System.out.print("Masukkan NIM yang dicari: ");
-                    String nim = sc.nextLine();
+                    int nim = sc.nextInt();
                     print(nim);
                     break;
                 case 3:
@@ -46,11 +46,13 @@ public class krs {
         }
     }
 
+
     public static void tambah(Scanner sc) {
         System.out.print("Nama mahasiswa: ");
         String nama = sc.nextLine();
         System.out.print("NIM: ");
-        String nim = sc.nextLine();
+        int nim = sc.nextInt();
+        sc.nextLine();
 
         char next;
         int currentTotalSKS = totalSKS(nim); // Menghitung total SKS awal
@@ -65,7 +67,8 @@ public class krs {
 
             KRS[KRS.length - 1][0] = nama;
 
-            KRS[KRS.length - 1][1] = nim;
+            String nimHuruf = String.valueOf(nim);
+            KRS[KRS.length - 1][1] = nimHuruf;
 
             System.out.print("Kode matkul: ");
             String kodeMK = sc.nextLine();
@@ -77,8 +80,8 @@ public class krs {
 
             while (true) {
                 System.out.print("Jumlah SKS (1-3): ");
-                String input = sc.nextLine();
-                int sks = Integer.parseInt(input);
+                int input = sc.nextInt();
+                int sks = input;
                 if (sks < 1 || sks > 3) {
                     System.out.println("Jumlah SKS harus antara 1 dan 3. Silakan input kembali.");
                     continue;
@@ -88,7 +91,7 @@ public class krs {
                     KRS = hapusDataTerakhir();
                     break;
                 }
-                KRS[KRS.length - 1][4] = input; // Simpan SKS jika valid
+                KRS[KRS.length - 1][4] = String.valueOf(input); // Simpan SKS jika valid
                 System.out.println("Data mata kuliah berhasil ditambahkan.");
                 currentTotalSKS += sks; // Tambahkan ke total SKS
                 break;
@@ -135,17 +138,17 @@ public class krs {
         }
     }
 
-    public static int totalSKS(String nim) {
+    public static int totalSKS(int nim) {
         int totalSKS = 0;
         for (int i = 0; i < KRS.length; i++) {
-            if (KRS[i][1].equalsIgnoreCase(nim)) {
+            if (KRS[i][1] == String.valueOf(nim)) {
                 totalSKS += Integer.parseInt(KRS[i][4]);
             }
         }
         return totalSKS;
     }
 
-    public static void print(String nim) {
+    public static void print(int nim) {
         if (KRS.length == 0) {
             System.out.println("Data KRS kosong.");
             return;
@@ -155,7 +158,7 @@ public class krs {
         System.out.print("NIM \t\t" + "nama \t" + "\t\t" + "kode MK \t" + "nama matkul \t\t" + "SKS \t");
         System.out.println();
         for (int i = 0; i < KRS.length; i++) {
-            if (KRS[i][1].equalsIgnoreCase(nim)) {
+            if (KRS[i][1]==String.valueOf(nim)) {
                 for (int j = 1; j >= 0; j--) {
                     System.out.print(KRS[i][j] + "\t");
                 }
@@ -189,12 +192,11 @@ public class krs {
             }
 
             if (!sudahDiperiksa) {
-                if (totalSKS(currentNIM) < 20) {
+                if (totalSKS(Integer.parseInt(currentNIM)) < 20) {
                     jumlahMhs++;
                 }
             }
         }
-
         return jumlahMhs;
     }
 
