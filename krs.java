@@ -46,7 +46,6 @@ public class krs {
         }
     }
 
-
     public static void tambah(Scanner sc) {
         System.out.print("Nama mahasiswa: ");
         String nama = sc.nextLine();
@@ -140,8 +139,9 @@ public class krs {
 
     public static int totalSKS(int nim) {
         int totalSKS = 0;
+        String nimHuruf = String.valueOf(nim);
         for (int i = 0; i < KRS.length; i++) {
-            if (KRS[i][1] == String.valueOf(nim)) {
+            if (KRS[i][1].equalsIgnoreCase(nimHuruf)) {
                 totalSKS += Integer.parseInt(KRS[i][4]);
             }
         }
@@ -149,6 +149,7 @@ public class krs {
     }
 
     public static void print(int nim) {
+        String nimHuruf = String.valueOf(nim);
         if (KRS.length == 0) {
             System.out.println("Data KRS kosong.");
             return;
@@ -158,7 +159,7 @@ public class krs {
         System.out.print("NIM \t\t" + "nama \t" + "\t\t" + "kode MK \t" + "nama matkul \t\t" + "SKS \t");
         System.out.println();
         for (int i = 0; i < KRS.length; i++) {
-            if (KRS[i][1]==String.valueOf(nim)) {
+            if (KRS[i][1].equalsIgnoreCase(nimHuruf)) {
                 for (int j = 1; j >= 0; j--) {
                     System.out.print(KRS[i][j] + "\t");
                 }
