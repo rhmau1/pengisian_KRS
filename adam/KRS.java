@@ -36,6 +36,7 @@ public class KRS {
                     System.out.println();
                     System.out.println("--- Analisis Data KRS ---");
                     // Tambahkan logika analisis di sini jika diperlukan
+                    analisis();
                     break;
                 case 4:
                     System.out.println("Terima Kasih!");
@@ -166,15 +167,15 @@ public class KRS {
 
     public static void print(String nim) {
         int totalSKS = 0;
-    
+
         if (krs.length == 0) {
             System.out.println("Data KRS kosong.");
             return;
         }
-    
+
         System.out.println("Daftar KRS: ");
         System.out.println("NIM \t\tNama \t\tKode MK \tNama Matkul \t\tSKS");
-    
+
         for (int i = 0; i < krs.length; i++) {
             if (krs[i][1].equalsIgnoreCase(nim)) {
                 for (int j = 0; j < krs[0].length; j++) {
@@ -192,5 +193,19 @@ public class KRS {
         }
         System.out.println("Total SKS: " + totalSKS);
     }
-    
+
+    public static void analisis() {
+        int sksKurang = 0;
+        for (int i = 0; i < jumlahsks.length; i++) {
+            if (jumlahsks[i][1] < 20) {
+                sksKurang++;
+            }
+            if (jumlahsks[i][1] == 0) {
+                sksKurang--;
+                break;
+            }
+        }
+        System.out.println("Jumlah anak yang sks nya kurang dari 20 : " + sksKurang);
+    }
+
 }
