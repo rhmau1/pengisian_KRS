@@ -85,6 +85,11 @@ public class krs {
                     System.out.println("Jumlah SKS harus antara 1 dan 3. Silakan input kembali.");
                     continue;
                 }
+                if (totalSKSPerMatkul(nim, kodeMK, sks) > 3) {
+                    System.out.println("Jumlah SKS matkul ini sudah > 3. Input tidak valid.");
+                    KRS = hapusDataTerakhir();
+                    break;
+                }
                 if (currentTotalSKS + sks > 24) {
                     System.out.println("Jumlah SKS total melebihi 24. Input tidak valid.");
                     KRS = hapusDataTerakhir();
@@ -143,6 +148,21 @@ public class krs {
         for (int i = 0; i < KRS.length; i++) {
             if (KRS[i][1].equalsIgnoreCase(nimHuruf)) {
                 totalSKS += Integer.parseInt(KRS[i][4]);
+            }
+        }
+        return totalSKS;
+    }
+
+    public static int totalSKSPerMatkul(int nim, String kodeMK, int sks) {
+        int totalSKS = 0;
+        String nimHuruf = String.valueOf(nim);
+        for (int i = 0; i < KRS.length; i++) {
+            if (KRS[i][1].equalsIgnoreCase(nimHuruf) && KRS[i][2].equalsIgnoreCase(kodeMK)) {
+                if (KRS[i][4] == null) {
+                    totalSKS += sks;
+                } else {
+                    totalSKS += Integer.parseInt(KRS[i][4]);
+                }
             }
         }
         return totalSKS;
